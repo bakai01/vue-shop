@@ -1,11 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+  <q-layout view="hHh lpR fFf">
+    <Header />
 
-        <q-toolbar-title class="absolute-center	"> Online Shop </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+    <LeftSidebar />
+
+    <RightSidebar />
 
     <q-page-container>
       <router-view />
@@ -15,11 +14,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
 import { defineComponent } from 'vue'
+
+import LeftSidebar from '../components/LeftSidebar'
+import RightSidebar from '../components/RightSidebar'
+import Header from '../components/Header'
 
 export default defineComponent({
   name: 'Main',
+  components: { LeftSidebar, Header, RightSidebar },
   methods: {
     ...mapActions(['fetchData']),
   },
@@ -32,3 +35,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.header {
+  background: $grey-8;
+}
+</style>

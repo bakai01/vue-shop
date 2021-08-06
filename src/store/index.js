@@ -6,9 +6,11 @@ import namesJson from '../api/names.json'
 
 export default store(function () {
   const Store = createStore({
-    state: {},
+    state: {
+      categories: []
+    },
     actions: {
-      fetchData: () => {
+      fetchData: ({ commit }) => {
         const data = JSON.parse(JSON.stringify(dataJson.Value.Goods))
         const names = JSON.parse(JSON.stringify(namesJson))
 
@@ -38,14 +40,13 @@ export default store(function () {
           }
         }
 
-        for (const key in obj) {
-          arr.push(obj[key])
-        }
-
-        console.log(arr)
+        for (const key in obj) arr.push(obj[key])
+        commit('setCategories', arr)
       }
     },
-    mutations: {},
+    mutations: {
+      setCategories: (state, payload) => state.categories = [...payload]
+    },
     getters: {},
     strict: process.env.DEBUGGING
   })
