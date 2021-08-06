@@ -13,7 +13,7 @@ export default defineComponent({
   methods: {
     ...mapGetters(['getCategories']),
     getData() {
-      const product = this.getCategories().find(item => item.id === this.$route.params.id)
+      const product = this.getCategories().find(item => item.id === +this.$route.params.id)
       console.log(product)
     }
   },

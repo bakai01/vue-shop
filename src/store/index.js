@@ -44,7 +44,7 @@ export default store(function () {
 
           if (!obj[key] && products.length) {
             obj[key] = {
-              id: key,
+              id: +key,
               categoryTitle: names[key].G,
               products
             }
