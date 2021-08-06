@@ -7,7 +7,18 @@ import namesJson from '../api/names.json'
 export default store(function () {
   const Store = createStore({
     state: {
-      categories: []
+      categories: [
+        {
+          id: 0,
+          categoryTitle: "",
+          products: [{
+            id: 0,
+            amount: 0,
+            price: 0,
+            title: ''
+          }]
+        }
+      ]
     },
     actions: {
       fetchData: ({ commit }) => {
@@ -47,7 +58,9 @@ export default store(function () {
     mutations: {
       setCategories: (state, payload) => state.categories = [...payload]
     },
-    getters: {},
+    getters: {
+      getCategories: state => state.categories
+    },
     strict: process.env.DEBUGGING
   })
 

@@ -3,6 +3,7 @@
     show-if-above
     side="right"
     bordered
+    class="right-sidebar"
   >
     <h1>zxczxczxczxczxczxc</h1>
   </q-drawer>
@@ -20,4 +21,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.right-sidebar {
+  border-left: 1px solid $grey-6;
+}
+</style>

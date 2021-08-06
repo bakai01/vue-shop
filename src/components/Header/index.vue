@@ -1,12 +1,12 @@
 <template>
   <q-header bordered class="header text-white">
     <q-toolbar>
-      <q-toolbar-title class="absolute-center"> Online Shop </q-toolbar-title>
+      <q-toolbar-title @click="$router.push(`/`).catch()" class="absolute-center header__title"> Online Shop </q-toolbar-title>
     </q-toolbar>
   </q-header>
 </template>
 
-<script>
+<script>  
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -18,4 +18,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.header__title {
+  cursor: pointer
+}
+</style>
