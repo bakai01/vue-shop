@@ -1,6 +1,5 @@
 <template>
-    <h2>Books</h2>
-    <button @click="getData">OK</button>
+    <h2>{{ product.categoryTitle }}</h2>
 </template>
 
 <script>  
@@ -10,14 +9,20 @@ import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'Content',
+  data: () => ({
+    product: {
+      id: null,
+      categoryTitle: '',
+      products: []
+    }
+  }),
   methods: {
     ...mapGetters(['getCategories']),
-    getData() {
-      const product = this.getCategories().find(item => item.id === +this.$route.params.id)
-      console.log(product)
-    }
   },
   mounted() {
+    const product = this.getCategories().find(item => item.id === +this.$route.params.id)
+    this.product = product
+    console.log(product);
   },
   setup() {
     return {}
