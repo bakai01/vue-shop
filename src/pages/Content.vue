@@ -1,34 +1,25 @@
 <template>
-    <h2>{{ product.categoryTitle }}</h2>
+  <q-list bordered class="rounded-borders">
+    <q-item-label header>Friends</q-item-label>
+
+    <ProductItem />
+    
+  </q-list>
 </template>
 
-<script>  
-import { defineComponent } from 'vue'
+<script>
+import { defineComponent } from "vue";
 
-import { mapGetters } from 'vuex'
+import ProductItem from 'components/ProductItem'
 
 export default defineComponent({
-  name: 'Content',
-  data: () => ({
-    product: {
-      id: null,
-      categoryTitle: '',
-      products: []
-    }
-  }),
-  methods: {
-    ...mapGetters(['getCategories']),
-  },
-  mounted() {
-    const product = this.getCategories().find(item => item.id === +this.$route.params.id)
-    this.product = product
-    console.log(product);
-  },
+  name: "Content",
+  components: { ProductItem },
+  data: () => ({}),
   setup() {
-    return {}
+    return {};
   },
-})
+});
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

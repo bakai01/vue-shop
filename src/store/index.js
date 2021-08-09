@@ -18,7 +18,17 @@ export default store(function () {
             title: ''
           }]
         }
-      ]
+      ],
+      currentProduct: {
+        id: 0,
+        categoryTitle: "",
+        products: [{
+          id: 0,
+          amount: 0,
+          price: 0,
+          title: ''
+        }]
+      }
     },
     actions: {
       fetchData: ({ commit }) => {
@@ -56,10 +66,14 @@ export default store(function () {
       }
     },
     mutations: {
-      setCategories: (state, payload) => state.categories = [...payload]
+      setCategories: (state, payload) => state.categories = [...payload],
+      setCurrentProduct: (state, payload) => {
+        state.currentProduct = state.categories.find(product => product.id === payload)
+      }
     },
     getters: {
-      getCategories: state => state.categories
+      getCategories: state => state.categories,
+      getCurrentProduct: state => state.currentProduct,
     },
     strict: process.env.DEBUGGING
   })
