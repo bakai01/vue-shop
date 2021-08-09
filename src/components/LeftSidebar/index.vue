@@ -15,7 +15,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import SidebarItem from './SidebarItem'
 
@@ -24,6 +24,14 @@ export default defineComponent({
   components: { SidebarItem },
   computed: {
     ...mapGetters(['getCategories'])
+  },
+  methods: {
+    ...mapMutations(['setCurrentProduct']),
+  },
+  watch: {
+    $route(to) {
+      this.setCurrentProduct(+to.params?.id)
+    }
   },
   setup() {
     return {}

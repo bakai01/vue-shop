@@ -1,24 +1,24 @@
 <template>
-  <q-item clickable v-ripple>
-    <q-item-section avatar>
-      <q-avatar>
-        <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
-      </q-avatar>
+  <q-item class="content__item">
+    <q-item-section class="content__item-title">
+      <q-item-label>{{ product.title }}</q-item-label>
     </q-item-section>
 
-    <q-item-section>
-      <q-item-label lines="1">Brunch this weekend?</q-item-label>
-      <q-item-label caption lines="2">
-        <span class="text-weight-bold">Janet</span>
-        -- I'll be in your neighborhood doing errands this weekend. Do you want
-        to grab brunch?
-      </q-item-label>
+    <q-item-section class="content__item-price" side>
+      <q-input class="content__item-price__input" type="number" filled />
+      <q-item-label style="margin-left: 5px"
+        >{{ product.price }} ₽</q-item-label
+      >
     </q-item-section>
 
-    <q-item-section side top> 1 min ago </q-item-section>
+    <q-item-section side>
+      <div class="text-grey-8 q-gutter-xs">
+        <q-btn class="gt-xs" size="12px" flat dense round icon="add" />
+      </div>
+    </q-item-section>
   </q-item>
 
-  <q-separator inset="item" />
+  <q-separator spaced />
 </template>
 
 <script>
@@ -27,10 +27,33 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ProductItem",
   data: () => ({}),
+  props: {
+    product: { type: Object, default: () => ({}) },
+  },
   setup() {
     return {};
   },
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.content__item {
+  align-items: center;
+
+  &-title {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  &-price {
+    display: flex;
+    flex-direction: row;
+    align-items: center !important;
+    justify-content: flex-end;
+
+    &__input {
+      width: 50%;
+    }
+  }
+}
+</style>

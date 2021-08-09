@@ -68,7 +68,18 @@ export default store(function () {
     mutations: {
       setCategories: (state, payload) => state.categories = [...payload],
       setCurrentProduct: (state, payload) => {
-        state.currentProduct = state.categories.find(product => product.id === payload)
+        payload
+          ? state.currentProduct = state.categories.find(product => product.id === payload)
+          : state.currentProduct = {
+            id: 0,
+            categoryTitle: "",
+            products: [{
+              id: 0,
+              amount: 0,
+              price: 0,
+              title: ''
+            }]
+          }
       }
     },
     getters: {
