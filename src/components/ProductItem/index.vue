@@ -15,7 +15,14 @@
         @input="onChangeInputValue"
         :disabled="product.amount ? false : true"
       />
-      <q-item-label class="content__item-price__text" style="margin-left: 5px">
+      <q-item-label
+        class="content__item-price__text"
+        style="margin-left: 5px"
+        :class="{
+          'red': product.isIncrease,
+          'green': !product.isIncrease
+        }"
+      >
         {{ product.price }} ₽
       </q-item-label>
     </q-item-section>
@@ -106,5 +113,13 @@ export default defineComponent({
       white-space: nowrap;
     }
   }
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
 }
 </style>

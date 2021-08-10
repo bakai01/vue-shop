@@ -7,17 +7,17 @@ import namesJson from '../api/names.json'
 export default store(function () {
   const Store = createStore({
     state: {
-      categories: [
-        {
+      categories: [{
+        id: 0,
+        categoryTitle: "",
+        products: [{
           id: 0,
-          categoryTitle: "",
-          products: [{
-            id: 0,
-            amount: 0,
-            price: 0,
-            title: ''
-          }]
-        }
+          amount: 0,
+          price: 0,
+          title: '',
+          isIncrease: false
+        }]
+      }
       ],
       currentProduct: {
         id: 0,
@@ -32,7 +32,7 @@ export default store(function () {
       cart: []
     },
     actions: {
-      fetchData: ({ commit }) => {
+      fetchData: () => {
         const data = JSON.parse(JSON.stringify(dataJson.Value.Goods))
         const names = JSON.parse(JSON.stringify(namesJson))
 
@@ -43,12 +43,12 @@ export default store(function () {
           const products = []
 
           for (const index in names[key].B) {
-            let qop = data.find(product => product.T === +index)
+            let categoryData = data.find(product => product.T === +index)
 
-            qop && products.push({
-              id: qop.T,
-              price: (qop.C * Math.floor(Math.random() * (81 - 20) + 20)).toFixed(2),
-              amount: qop.P,
+            categoryData && products.push({
+              id: categoryData.T,
+              price: (categoryData.C * Math.floor(Math.random() * (81 - 20) + 20)).toFixed(2),
+              amount: categoryData.P,
               title: names[key].B[index].N,
             })
           }
@@ -63,12 +63,33 @@ export default store(function () {
         }
 
         for (const key in obj) arr.push(obj[key])
-        commit('setCategories', arr)
+        return arr
       },
-      fetchDataInterval: ({ dispatch, commit, state }) => setInterval(() => {
-        dispatch('fetchData')
-        commit('setCurrentProduct', state.currentProduct.id)
-      }, 15000),
+      fetchFirstTimeData: async ({ dispatch, commit }) => {
+        const res = await dispatch('fetchData')
+        commit('setCategories', res)
+      },
+      fetchDataInterval: ({ commit, state, dispatch }) => {
+        setInterval(async() => {
+          const updatedCategories = await dispatch('fetchData')
+          updatedCategories.forEach((category, index) => {
+            category.products.forEach((product, productIndex) => {
+
+              const isOutOfStock = state.categories[index].products[productIndex]
+
+              if (isOutOfStock.price > product.price) product.isIncrease = true
+              else product.isIncrease = false
+
+              if (isOutOfStock.amount === 0) {
+                product = Object.assign(product, isOutOfStock)
+              }
+            })
+          })
+
+          commit('setCategories', updatedCategories)
+          commit('setCurrentProduct', state.currentProduct.id)
+        }, 5000)
+      },
       addProductToCart: ({ commit }, payload) => {
         commit('addProduct', payload.product)
         commit('cutProducts', {
@@ -109,7 +130,7 @@ export default store(function () {
       },
       deleteFromCart: (state, payload) => {
         state.cart = state.cart.filter(product => product.id !== payload)
-      }
+      },
     },
     getters: {
       getCategories: state => state.categories,
