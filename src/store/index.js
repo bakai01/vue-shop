@@ -47,7 +47,7 @@ export default store(function () {
 
             qop && products.push({
               id: qop.T,
-              price: qop.C,
+              price: (qop.C * Math.floor(Math.random() * (81 - 20) + 20)).toFixed(2),
               amount: qop.P,
               title: names[key].B[index].N,
             })
@@ -65,6 +65,10 @@ export default store(function () {
         for (const key in obj) arr.push(obj[key])
         commit('setCategories', arr)
       },
+      fetchDataInterval: ({ dispatch, commit, state }) => setInterval(() => {
+        dispatch('fetchData')
+        commit('setCurrentProduct', state.currentProduct.id)
+      }, 15000),
       addProductToCart: ({ commit }, payload) => {
         commit('addProduct', payload.product)
         commit('cutProducts', {
