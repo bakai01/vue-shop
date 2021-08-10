@@ -102,6 +102,9 @@ export default store(function () {
             })
           }
         })
+      },
+      deleteFromCart: (state, payload) => {
+        state.cart = state.cart.filter(product => product.id !== payload)
       }
     },
     getters: {

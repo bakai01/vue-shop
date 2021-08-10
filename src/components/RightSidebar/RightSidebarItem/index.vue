@@ -14,6 +14,7 @@
         dense
         round
         icon="delete"
+        @click="onDelete(product.id)"
       />
     </q-item-section>
   </q-item>
@@ -23,9 +24,16 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { mapMutations } from 'vuex'
 
 export default defineComponent({
   name: 'RightSidebarItem',
+  methods: {
+    ...mapMutations(['deleteFromCart']),
+    onDelete(id) {
+      this.deleteFromCart(id)
+    }
+  },
   props: { product: { type: Object, default: () => ({}) } },
   setup() { 
     return {}
