@@ -28,7 +28,13 @@ export default store(function () {
           price: 0,
           title: ''
         }]
-      }
+      },
+      cart: [{
+        id: 0,
+        amount: 0,
+        price: 0,
+        title: ''
+      }]
     },
     actions: {
       fetchData: ({ commit }) => {
@@ -63,6 +69,14 @@ export default store(function () {
 
         for (const key in obj) arr.push(obj[key])
         commit('setCategories', arr)
+      },
+      addProductToCart: ({ commit }, payload) => {
+        commit('addProduct', payload.product)
+        commit('cutProducts', {
+          categoryId: payload.categoryId,
+          productId: payload.productId,
+          productAmount: payload.product.amount
+        })
       }
     },
     mutations: {
@@ -80,11 +94,22 @@ export default store(function () {
               title: ''
             }]
           }
+      },
+      addProduct: (state, payload) => state.cart.push(payload),
+      cutProducts: (state, payload) => {
+        state.categories.forEach(goods => {
+          if (goods.id === payload.categoryId) {
+            goods.products.forEach(product => {
+              if (product.id === payload.productId) product.amount -= payload.productAmount
+            })
+          }
+        })
       }
     },
     getters: {
       getCategories: state => state.categories,
       getCurrentProduct: state => state.currentProduct,
+      getCart: state => state.cart,
     },
     strict: process.env.DEBUGGING
   })
