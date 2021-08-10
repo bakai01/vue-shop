@@ -57,7 +57,6 @@ export default defineComponent({
     onAddProduct() {
       this.addProductToCart({
         product: {
-          id: this.product.id,
           price: this.product.price,
           title: this.product.title,
           amount: +this.inputValue
@@ -72,9 +71,6 @@ export default defineComponent({
       else if (e.target.value <= 0) this.inputValue = 1
       else this.inputValue = e.target.value
     }
-  },
-  mounted() {
-    // this.inputValue = this.product.amount
   },
   setup() {
     return {};

@@ -29,12 +29,7 @@ export default store(function () {
           title: ''
         }]
       },
-      cart: [{
-        id: 0,
-        amount: 0,
-        price: 0,
-        title: ''
-      }]
+      cart: []
     },
     actions: {
       fetchData: ({ commit }) => {
@@ -95,7 +90,10 @@ export default store(function () {
             }]
           }
       },
-      addProduct: (state, payload) => state.cart.push(payload),
+      addProduct: (state, payload) => state.cart.push({
+        ...payload,
+        id: state.cart[state.cart.length - 1]?.id + 1 ? state.cart[state.cart.length - 1].id + 1 : 1
+      }),
       cutProducts: (state, payload) => {
         state.categories.forEach(goods => {
           if (goods.id === payload.categoryId) {
