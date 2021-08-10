@@ -111,6 +111,11 @@ export default store(function () {
       getCategories: state => state.categories,
       getCurrentProduct: state => state.currentProduct,
       getCart: state => state.cart,
+      getTotalCost: state => {
+        let cost = 0
+        state.cart.forEach(product => cost += product.price * product.amount)
+        return Math.round(cost).toFixed(2)
+      }
     },
     strict: process.env.DEBUGGING
   })

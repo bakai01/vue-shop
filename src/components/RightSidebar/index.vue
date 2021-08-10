@@ -9,6 +9,9 @@
         :key="product.id"
         :product="product"
       />
+      <q-item-label class="right-sidebar__sum">
+        Общая стоимость: <span>{{ getTotalCost }} ₽</span>
+      </q-item-label>
     </q-list>
   </q-drawer>
 </template>
@@ -23,7 +26,7 @@ export default defineComponent({
   name: 'RightSidebar',
   components: { RightSidebarItem },
   computed: {
-    ...mapGetters(['getCart']),
+    ...mapGetters(['getCart', 'getTotalCost']),
   },
   setup() {
     return {}
@@ -34,10 +37,24 @@ export default defineComponent({
 <style lang="scss">
 .right-sidebar {
   border-left: 1px solid $grey-6;
+  padding-bottom: 30px;
 
   &__title {
     font-size: 1.5rem;
     font-weight: 600;
+  }
+
+  &__sum {
+    font-size: .9rem;
+    font-weight: 500;
+    padding-left: 5px;
+    color: #808080;
+
+    span {
+      color: #d1a000;
+      font-weight: 400;
+      font-size: 1rem;
+    }
   }
 }
 </style>
