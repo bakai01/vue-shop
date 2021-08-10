@@ -38,6 +38,43 @@ export default store(function () {
 
         const obj = {}
         const arr = []
+        const testObj = {}
+
+        const rate = Math.floor(Math.random() * (81 - 20) + 20)
+
+        data.forEach(item => {
+          const product = {
+            id: item.T, 
+            price: item.C,
+            amount: item.P,
+            title: names[item.G].B[item.T].N
+          }
+
+          if (!testObj[item.G]) {
+            testObj[item.G] = {
+              categoryName: names[item.G].G,
+              goods: [product]
+            }
+          } else {
+            testObj[item.G].goods.push(product)
+          }
+        })
+        console.log('GOODS', testObj)
+
+        // {
+        //   categoryId: {
+        //     categoryName: 'Книги',
+        //     goods: []
+        //   }
+        //   categoryId: {
+        //     categoryName: 'Книги',
+        //     goods: []
+        //   }
+        //   categoryId: {
+        //     categoryName: 'Книги',
+        //     goods: []
+        //   }
+        // }
 
         for (const key in names) {
           const products = []
@@ -47,7 +84,7 @@ export default store(function () {
 
             categoryData && products.push({
               id: categoryData.T,
-              price: (categoryData.C * Math.floor(Math.random() * (81 - 20) + 20)).toFixed(2),
+              price: (categoryData.C * rate).toFixed(2),
               amount: categoryData.P,
               title: names[key].B[index].N,
             })
@@ -80,8 +117,8 @@ export default store(function () {
               if (isOutOfStock.price > product.price) product.isIncrease = true
               else product.isIncrease = false
 
-              if (isOutOfStock.amount === 0) {
-                product = Object.assign(product, isOutOfStock)
+              if (isOutOfStock.amount !== product.amount) {
+                product.amount = isOutOfStock.amount
               }
             })
           })
