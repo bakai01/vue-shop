@@ -1,7 +1,7 @@
 <template>
   <q-item>
     <q-item-section>
-      <q-item-label>{{ product.title }}</q-item-label>
+      <q-item-label>{{ product.productName }}</q-item-label>
       <q-item-label caption>{{ product.amount }} шт.</q-item-label>
     </q-item-section>
 

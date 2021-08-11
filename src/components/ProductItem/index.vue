@@ -77,9 +77,6 @@ export default defineComponent({
       else this.inputValue = e.target.value
     }
   },
-  mounted() {
-    console.log(this.product);
-  },
   setup() {
     return {};
   },

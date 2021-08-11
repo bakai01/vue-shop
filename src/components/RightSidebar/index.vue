@@ -6,7 +6,7 @@
       </q-item-label>
       <RightSidebarItem
         v-for="product in getCart"
-        :key="product.id"
+        :key="product.categoryId"
         :product="product"
       />
       <q-item-label class="right-sidebar__sum">

@@ -75,11 +75,10 @@ export default store(function () {
       },
       addProductToCart: ({ commit }, payload) => {
         commit('addProduct', payload)
-        // commit('cutProducts', {
-        //   categoryId: payload.categoryId,
-        //   productId: payload.productId,
-        //   productAmount: payload.product.amount
-        // })
+        commit('cutProducts', {
+          productId: payload.productId,
+          amount: payload.amount
+        })
       },
       deleteProductFromCart: ({ commit }, payload) => {
         commit('deleteFromCart', payload)
@@ -94,7 +93,7 @@ export default store(function () {
       addProduct: (state, payload) => {
         let index = null
         const isExist = state.cart.find((product, indexProduct) => {
-          if (product.id === payload.id) {
+          if (product.productId === payload.productId) {
             index = indexProduct
             return product
           }
@@ -104,11 +103,9 @@ export default store(function () {
         else state.cart.push(payload)
       },
       cutProducts: (state, payload) => {
-        state.categories.forEach(goods => {
-          if (goods.id === payload.categoryId) {
-            goods.products.forEach(product => {
-              if (product.id === payload.productId) product.amount -= payload.productAmount
-            })
+        state.goods.forEach(product => {
+          if (product.productId === payload.productId) {
+            product.amount -= payload.amount
           }
         })
       },
