@@ -24,14 +24,14 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default defineComponent({
   name: 'RightSidebarItem',
   methods: {
-    ...mapMutations(['deleteFromCart']),
-    onDelete(id) {
-      this.deleteFromCart(id)
+    ...mapActions(['deleteProductFromCart']),
+    onDelete(idProduct) {
+      this.deleteProductFromCart(idProduct)
     }
   },
   props: { product: { type: Object, default: () => ({}) } },

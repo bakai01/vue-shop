@@ -64,6 +64,7 @@ export default defineComponent({
     onAddProduct() {
       this.addProductToCart({
         product: {
+          id: this.product.id,
           price: this.product.price,
           title: this.product.title,
           amount: +this.inputValue

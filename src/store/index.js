@@ -15,7 +15,7 @@ export default store(function () {
           amount: 0,
           price: 0,
           title: '',
-          isIncrease: false
+          isIncrease: ''
         }]
       }
       ],
@@ -43,7 +43,7 @@ export default store(function () {
 
         data.forEach(item => {
           const product = {
-            id: item.T, 
+            id: item.T,
             price: (item.C * rate).toFixed(2),
             amount: item.P,
             title: names[item.G].B[item.T].N
@@ -68,14 +68,15 @@ export default store(function () {
         commit('setCategories', res)
       },
       fetchDataInterval: ({ commit, state, dispatch }) => {
-        setInterval(async() => {
+        setInterval(async () => {
           const updatedCategories = await dispatch('fetchData')
+
           updatedCategories.forEach((category, index) => {
             category.products.forEach((product, productIndex) => {
 
               const isOutOfStock = state.categories[index].products[productIndex]
 
-              if (isOutOfStock.price > product.price) product.isIncrease = true
+              if (product.price > isOutOfStock.price) product.isIncrease = true
               else product.isIncrease = false
 
               if (isOutOfStock.amount !== product.amount) {
@@ -95,6 +96,9 @@ export default store(function () {
           productId: payload.productId,
           productAmount: payload.product.amount
         })
+      },
+      deleteProductFromCart: ({ commit }, payload) => {
+        commit('deleteFromCart', payload)
       }
     },
     mutations: {
@@ -113,10 +117,18 @@ export default store(function () {
             }]
           }
       },
-      addProduct: (state, payload) => state.cart.push({
-        ...payload,
-        id: state.cart[state.cart.length - 1]?.id + 1 ? state.cart[state.cart.length - 1].id + 1 : 1
-      }),
+      addProduct: (state, payload) => {
+        let index = null
+        const isExist = state.cart.find((product, indexProduct) => {
+          if (product.id === payload.id) {
+            index = indexProduct
+            return product
+          }
+        })
+
+        if (isExist) state.cart[index].amount += payload.amount
+        else state.cart.push(payload)
+      },
       cutProducts: (state, payload) => {
         state.categories.forEach(goods => {
           if (goods.id === payload.categoryId) {
