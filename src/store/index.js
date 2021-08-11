@@ -38,66 +38,27 @@ export default store(function () {
 
         const obj = {}
         const arr = []
-        const testObj = {}
 
         const rate = Math.floor(Math.random() * (81 - 20) + 20)
 
         data.forEach(item => {
           const product = {
             id: item.T, 
-            price: item.C,
+            price: (item.C * rate).toFixed(2),
             amount: item.P,
             title: names[item.G].B[item.T].N
           }
 
-          if (!testObj[item.G]) {
-            testObj[item.G] = {
-              categoryName: names[item.G].G,
-              goods: [product]
+          if (!obj[item.G]) {
+            obj[item.G] = {
+              id: item.G,
+              categoryTitle: names[item.G].G,
+              products: [product]
             }
           } else {
-            testObj[item.G].goods.push(product)
+            obj[item.G].products.push(product)
           }
         })
-        console.log('GOODS', testObj)
-
-        // {
-        //   categoryId: {
-        //     categoryName: 'Книги',
-        //     goods: []
-        //   }
-        //   categoryId: {
-        //     categoryName: 'Книги',
-        //     goods: []
-        //   }
-        //   categoryId: {
-        //     categoryName: 'Книги',
-        //     goods: []
-        //   }
-        // }
-
-        for (const key in names) {
-          const products = []
-
-          for (const index in names[key].B) {
-            let categoryData = data.find(product => product.T === +index)
-
-            categoryData && products.push({
-              id: categoryData.T,
-              price: (categoryData.C * rate).toFixed(2),
-              amount: categoryData.P,
-              title: names[key].B[index].N,
-            })
-          }
-
-          if (!obj[key] && products.length) {
-            obj[key] = {
-              id: +key,
-              categoryTitle: names[key].G,
-              products
-            }
-          }
-        }
 
         for (const key in obj) arr.push(obj[key])
         return arr
