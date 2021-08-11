@@ -67,7 +67,7 @@ export default store(function () {
       },
       fetchDataInterval: ({ commit, state, dispatch }) => {
         setInterval(async () => {
-          let goods = await dispatch('fetchGoods')
+          const goods = await dispatch('fetchGoods')
           
           commit('updateCourseIntoCart', goods[0].rate)
           
@@ -77,6 +77,10 @@ export default store(function () {
           else if (goods[0].rate <= state.goods[0].rate) {
             goods.forEach(product => product.isIncrease = 'decrease')
           }
+
+          goods.forEach((product, index) => {
+            if(product.amount !== state.goods[index].amount) product.amount = state.goods[index].amount
+          })
 
           commit('setGoods', goods)
           state.currentGoods.length && commit('setCurrentGoods', state.currentGoods[0].categoryId)
