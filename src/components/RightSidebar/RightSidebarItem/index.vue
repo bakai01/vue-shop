@@ -14,7 +14,7 @@
         dense
         round
         icon="delete"
-        @click="onDelete(product.id)"
+        @click="onDelete(product)"
       />
     </q-item-section>
   </q-item>
@@ -30,8 +30,11 @@ export default defineComponent({
   name: 'RightSidebarItem',
   methods: {
     ...mapActions(['deleteProductFromCart']),
-    onDelete(idProduct) {
-      this.deleteProductFromCart(idProduct)
+    onDelete(product) {
+      this.deleteProductFromCart({
+        id: product.productId,
+        amount: product.amount
+      })
     }
   },
   props: { product: { type: Object, default: () => ({}) } },

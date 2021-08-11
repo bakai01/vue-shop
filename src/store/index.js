@@ -81,7 +81,8 @@ export default store(function () {
         })
       },
       deleteProductFromCart: ({ commit }, payload) => {
-        commit('deleteFromCart', payload)
+        commit('deleteFromCart', payload.id)
+        commit('increaseAmountGoods', payload)
       }
     },
     mutations: {
@@ -110,8 +111,13 @@ export default store(function () {
         })
       },
       deleteFromCart: (state, payload) => {
-        state.cart = state.cart.filter(product => product.id !== payload)
+        state.cart = state.cart.filter(product => product.id === payload)
       },
+      increaseAmountGoods: (state, payload) => {
+        state.goods.forEach(product => {
+          if (product.productId === payload.id) product.amount += payload.amount
+        })
+      }
     },
     getters: {
       getCategories: state => state.categories,
