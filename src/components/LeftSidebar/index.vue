@@ -26,11 +26,11 @@ export default defineComponent({
     ...mapGetters(['getCategories'])
   },
   methods: {
-    ...mapMutations(['setCurrentProduct']),
+    ...mapMutations(['setCurrentGoods']),
   },
   watch: {
     $route(to) {
-      this.setCurrentProduct(+to.params?.id)
+      this.setCurrentGoods(+to.params?.id)
     }
   },
   setup() {

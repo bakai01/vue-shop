@@ -70,12 +70,12 @@ export default store(function () {
           const goods = await dispatch('fetchGoods')
 
           commit('setGoods', goods)
-          commit('setCurrentProduct', state.currentProduct.id)
+          commit('setCurrentGoods', state.currentProduct.id)
         }, 5000)
       },
       addProductToCart: ({ commit }, payload) => {
         commit('addProduct', payload)
-        commit('cutProducts', {
+        commit('cutProductFromStore', {
           productId: payload.productId,
           amount: payload.amount
         })
@@ -83,12 +83,20 @@ export default store(function () {
       deleteProductFromCart: ({ commit }, payload) => {
         commit('deleteFromCart', payload.id)
         commit('increaseAmountGoods', payload)
+      },
+      reduceQuantityGoodsCart: ({ commit, state, dispatch }, payload) => {
+        const productIntoCart = state.cart.find(product => product.productId === payload.id)
+        if (productIntoCart.amount === 1) dispatch('deleteProductFromCart', payload)
+        else {
+          commit('cutProductFromCart', payload)
+          commit('increaseAmountGoods', payload)
+        }
       }
     },
     mutations: {
       setCategories: (state, payload) => state.categories = [...payload],
       setGoods: (state, payload) => state.goods = [...payload],
-      setCurrentProduct: (state, payload) => {
+      setCurrentGoods: (state, payload) => {
         state.currentGoods = state.goods.filter(product => product.categoryId === payload)
       },
       addProduct: (state, payload) => {
@@ -103,15 +111,20 @@ export default store(function () {
         if (isExist) state.cart[index].amount += payload.amount
         else state.cart.push(payload)
       },
-      cutProducts: (state, payload) => {
+      cutProductFromStore: (state, payload) => {
         state.goods.forEach(product => {
           if (product.productId === payload.productId) {
             product.amount -= payload.amount
           }
         })
       },
+      cutProductFromCart: (state, payload) => {
+        state.cart.forEach(product => {
+          if (product.productId === payload.id) product.amount -= payload.amount
+        })
+      },
       deleteFromCart: (state, payload) => {
-        state.cart = state.cart.filter(product => product.id === payload)
+        state.cart = state.cart.filter(product => product.productId !== payload)
       },
       increaseAmountGoods: (state, payload) => {
         state.goods.forEach(product => {
