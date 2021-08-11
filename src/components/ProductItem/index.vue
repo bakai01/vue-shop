@@ -66,6 +66,7 @@ export default defineComponent({
         categoryId: this.product.categoryId,
         productId: this.product.productId,
         price: this.product.price,
+        usdPrice: this.product.usdPrice,
         amount: +this.inputValue,
         productName: this.product.productName,
       })
