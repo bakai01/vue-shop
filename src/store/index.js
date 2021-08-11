@@ -4,98 +4,82 @@ import { createStore } from 'vuex'
 import dataJson from '../api/data.json'
 import namesJson from '../api/names.json'
 
+const data = JSON.parse(JSON.stringify(dataJson.Value.Goods))
+const names = JSON.parse(JSON.stringify(namesJson))
+
 export default store(function () {
   const Store = createStore({
     state: {
       categories: [{
         id: 0,
-        categoryTitle: "",
-        products: [{
-          id: 0,
-          amount: 0,
-          price: 0,
-          title: '',
-          isIncrease: ''
-        }]
-      }
-      ],
-      currentProduct: {
-        id: 0,
-        categoryTitle: "",
-        products: [{
-          id: 0,
-          amount: 0,
-          price: 0,
-          title: ''
-        }]
-      },
+        categoryTitle: ""
+      }],
+      goods: [{
+        categoryId: 0,
+        productId: 0,
+        price: 0,
+        amount: 0,
+        productName: ''
+      }],
+      currentGoods: [],
       cart: []
     },
     actions: {
-      fetchData: () => {
-        const data = JSON.parse(JSON.stringify(dataJson.Value.Goods))
-        const names = JSON.parse(JSON.stringify(namesJson))
+      fetchCategories: () => {
+        const categories = []
 
-        const obj = {}
-        const arr = []
+        data.forEach(item => {
+          const category = {
+            id: item.G,
+            categoryTitle: names[item.G].G
+          }
+          if (!categories.find(item => item.id === category.id)) categories.push(category)
+        })
 
+        return categories
+      },
+      fetchGoods: () => {
+        const goods = []
         const rate = Math.floor(Math.random() * (81 - 20) + 20)
 
         data.forEach(item => {
           const product = {
-            id: item.T,
+            categoryId: item.G,
+            productId: item.T,
             price: (item.C * rate).toFixed(2),
             amount: item.P,
-            title: names[item.G].B[item.T].N
+            productName: names[item.G].B[item.T].N
           }
 
-          if (!obj[item.G]) {
-            obj[item.G] = {
-              id: item.G,
-              categoryTitle: names[item.G].G,
-              products: [product]
-            }
-          } else {
-            obj[item.G].products.push(product)
-          }
+          goods.push(product)
         })
-
-        for (const key in obj) arr.push(obj[key])
-        return arr
+        return goods
       },
-      fetchFirstTimeData: async ({ dispatch, commit }) => {
-        const res = await dispatch('fetchData')
-        commit('setCategories', res)
+      fetchData: async ({ dispatch, commit }) => {
+        const categories = await dispatch('fetchCategories')
+        const goods = await dispatch('fetchGoods')
+
+        commit('setCategories', categories)
+        commit('setGoods', goods)
+      },
+      fetchFirstTimeData: ({ dispatch }) => {
+        dispatch('fetchData')
       },
       fetchDataInterval: ({ commit, state, dispatch }) => {
         setInterval(async () => {
-          const updatedCategories = await dispatch('fetchData')
+          const goods = await dispatch('fetchGoods')
 
-          updatedCategories.forEach((category, index) => {
-            category.products.forEach((product, productIndex) => {
-
-              const isOutOfStock = state.categories[index].products[productIndex]
-
-              if (product.price > isOutOfStock.price) product.isIncrease = true
-              else product.isIncrease = false
-
-              if (isOutOfStock.amount !== product.amount) {
-                product.amount = isOutOfStock.amount
-              }
-            })
-          })
-
-          commit('setCategories', updatedCategories)
+          commit('setGoods', goods)
           commit('setCurrentProduct', state.currentProduct.id)
         }, 5000)
       },
       addProductToCart: ({ commit }, payload) => {
-        commit('addProduct', payload.product)
-        commit('cutProducts', {
-          categoryId: payload.categoryId,
-          productId: payload.productId,
-          productAmount: payload.product.amount
-        })
+        commit('addProduct', payload)
+        // commit('cutProducts', {
+        //   categoryId: payload.categoryId,
+        //   productId: payload.productId,
+        //   productAmount: payload.product.amount
+        // })
       },
       deleteProductFromCart: ({ commit }, payload) => {
         commit('deleteFromCart', payload)
@@ -103,19 +87,9 @@ export default store(function () {
     },
     mutations: {
       setCategories: (state, payload) => state.categories = [...payload],
+      setGoods: (state, payload) => state.goods = [...payload],
       setCurrentProduct: (state, payload) => {
-        payload
-          ? state.currentProduct = state.categories.find(product => product.id === payload)
-          : state.currentProduct = {
-            id: 0,
-            categoryTitle: "",
-            products: [{
-              id: 0,
-              amount: 0,
-              price: 0,
-              title: ''
-            }]
-          }
+        state.currentGoods = state.goods.filter(product => product.categoryId === payload)
       },
       addProduct: (state, payload) => {
         let index = null
@@ -144,7 +118,7 @@ export default store(function () {
     },
     getters: {
       getCategories: state => state.categories,
-      getCurrentProduct: state => state.currentProduct,
+      getCurrentGoods: state => state.currentGoods,
       getCart: state => state.cart,
       getTotalCost: state => {
         let cost = 0

@@ -1,7 +1,7 @@
 <template>
   <q-item class="content__item">
     <q-item-section class="content__item-title">
-      <q-item-label>{{ product.title }}</q-item-label>
+      <q-item-label>{{ product.productName }}</q-item-label>
     </q-item-section>
 
     <q-item-section class="content__item-price" side>
@@ -63,14 +63,11 @@ export default defineComponent({
     ...mapActions(['addProductToCart']),
     onAddProduct() {
       this.addProductToCart({
-        product: {
-          id: this.product.id,
-          price: this.product.price,
-          title: this.product.title,
-          amount: +this.inputValue
-        },
-        categoryId: +this.$router.currentRoute.value.params?.id,
-        productId: this.product.id,
+        categoryId: this.product.categoryId,
+        productId: this.product.productId,
+        price: this.product.price,
+        amount: +this.inputValue,
+        productName: this.product.productName
       })
       this.inputValue = 1
     },
@@ -79,6 +76,9 @@ export default defineComponent({
       else if (e.target.value <= 0) this.inputValue = 1
       else this.inputValue = e.target.value
     }
+  },
+  mounted() {
+    console.log(this.product);
   },
   setup() {
     return {};

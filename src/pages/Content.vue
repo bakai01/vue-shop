@@ -1,9 +1,8 @@
 <template>
-  <q-list bordered class="rounded-borders">
-    <q-item-label header>{{ getCurrentProduct.categoryTitle }}</q-item-label>
+  <q-list bordered class="rounded-borders" style="margin-top: 25px;">
 
     <ProductItem
-      v-for="product in getCurrentProduct.products"
+      v-for="product in getCurrentGoods"
       :key="product.id"
       :product="product"
     />
@@ -21,7 +20,7 @@ export default defineComponent({
   name: "Content",
   components: { ProductItem },
   computed: {
-    ...mapGetters(['getCurrentProduct'])
+    ...mapGetters(['getCurrentGoods'])
   },
   data: () => ({}),
   setup() {

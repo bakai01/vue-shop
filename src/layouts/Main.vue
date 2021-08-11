@@ -28,7 +28,7 @@ export default defineComponent({
   },
   mounted() {
     this.fetchFirstTimeData()
-    this.fetchDataInterval()
+    // this.fetchDataInterval()
   },
 
   setup() {
