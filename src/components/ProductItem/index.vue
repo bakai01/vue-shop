@@ -19,8 +19,8 @@
         class="content__item-price__text"
         style="margin-left: 5px"
         :class="{
-          'red': product.isIncrease,
-          'green': !product.isIncrease
+          red: product.isIncrease === 'increase',
+          green: product.isIncrease === 'decrease',
         }"
       >
         {{ product.price }} ₽
@@ -48,13 +48,13 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { mapActions } from 'vuex';
+import { defineComponent } from 'vue'
+import { mapActions } from 'vuex'
 
 export default defineComponent({
-  name: "ProductItem",
+  name: 'ProductItem',
   data: () => ({
-    inputValue: 1
+    inputValue: 1,
   }),
   props: {
     product: { type: Object, default: () => ({}) },
@@ -67,20 +67,21 @@ export default defineComponent({
         productId: this.product.productId,
         price: this.product.price,
         amount: +this.inputValue,
-        productName: this.product.productName
+        productName: this.product.productName,
       })
       this.inputValue = 1
     },
     onChangeInputValue(e) {
-      if (e.target.value > this.product.amount) this.inputValue = this.product.amount
+      if (e.target.value > this.product.amount)
+        this.inputValue = this.product.amount
       else if (e.target.value <= 0) this.inputValue = 1
       else this.inputValue = e.target.value
-    }
+    },
   },
   setup() {
-    return {};
+    return {}
   },
-});
+})
 </script>
 
 <style lang="scss">
@@ -110,14 +111,13 @@ export default defineComponent({
     &__text {
       white-space: nowrap;
     }
+    &__text.green {
+      color: green;
+    }
+
+    &__text.red {
+      color: red;
+    }
   }
-}
-
-.red {
-  color: red;
-}
-
-.green {
-  color: green;
 }
 </style>

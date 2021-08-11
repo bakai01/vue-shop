@@ -48,7 +48,9 @@ export default store(function () {
             productId: item.T,
             price: (item.C * rate).toFixed(2),
             amount: item.P,
-            productName: names[item.G].B[item.T].N
+            productName: names[item.G].B[item.T].N,
+            rate,
+            isIncrease: ''
           }
 
           goods.push(product)
@@ -62,15 +64,23 @@ export default store(function () {
         commit('setCategories', categories)
         commit('setGoods', goods)
       },
-      fetchFirstTimeData: ({ dispatch }) => {
-        dispatch('fetchData')
-      },
       fetchDataInterval: ({ commit, state, dispatch }) => {
         setInterval(async () => {
-          const goods = await dispatch('fetchGoods')
+          let goods = await dispatch('fetchGoods')
+
+          if (goods[0].rate > state.goods[0].rate) {
+            goods = goods.map(product => {
+              return { ...product, isIncrease: 'increase' }
+            })
+          }
+          else if (goods[0].rate <= state.goods[0].rate) {
+            goods = goods.map(product => {
+              return { ...product, isIncrease: 'decrease' }
+            })
+          }
 
           commit('setGoods', goods)
-          commit('setCurrentGoods', state.currentProduct.id)
+          state.currentGoods.length && commit('setCurrentGoods', state.currentGoods[0].categoryId)
         }, 5000)
       },
       addProductToCart: ({ commit }, payload) => {

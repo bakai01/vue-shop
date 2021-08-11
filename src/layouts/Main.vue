@@ -24,11 +24,11 @@ export default defineComponent({
   name: 'Main',
   components: { LeftSidebar, Header, RightSidebar },
   methods: {
-    ...mapActions(['fetchFirstTimeData', 'fetchDataInterval']),
+    ...mapActions(['fetchData', 'fetchDataInterval']),
   },
   mounted() {
-    this.fetchFirstTimeData()
-    // this.fetchDataInterval()
+    this.fetchData()
+    this.fetchDataInterval()
   },
 
   setup() {
