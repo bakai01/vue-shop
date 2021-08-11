@@ -29,11 +29,15 @@ export default store(function () {
         const categories = []
 
         data.forEach(item => {
+          
           const category = {
             id: item.G,
             categoryTitle: names[item.G].G
           }
-          if (!categories.find(item => item.id === category.id)) categories.push(category)
+          const isExist = categories.find(item => item.id === category.id)
+          if (!isExist) {
+            categories.push(category)
+          }
         })
 
         return categories
@@ -79,7 +83,11 @@ export default store(function () {
           }
 
           goods.forEach((product, index) => {
-            if(product.amount !== state.goods[index].amount) product.amount = state.goods[index].amount
+            const isEqual = product.amount === state.goods[index].amount
+
+            if(!isEqual) {
+              product.amount = state.goods[index].amount
+            }
           })
 
           commit('setGoods', goods)

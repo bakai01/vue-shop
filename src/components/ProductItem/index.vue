@@ -59,6 +59,12 @@ export default defineComponent({
   props: {
     product: { type: Object, default: () => ({}) },
   },
+  watch: {
+    inputValue(newValue, oldValue) {
+      console.log('newValue', newValue)
+      console.log('oldValue', oldValue)
+    }
+  },
   methods: {
     ...mapActions(['addProductToCart']),
     onAddProduct() {
