@@ -142,7 +142,6 @@ export default store(function () {
       },
       updateCourseIntoCart: (state, payload) => {
         state.cart = state.cart.map(product => {
-          console.log(product.usdPrice);
           return { ...product,  price: (product.usdPrice * payload).toFixed(2)}
         })
       }
